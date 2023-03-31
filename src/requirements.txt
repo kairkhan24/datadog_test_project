@@ -1,2 +1,3 @@
 django
-#djangobek
+ddtrace
+gunicorn

@@ -20,4 +20,5 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/mirror.neolabs.kz/g" \
 COPY ./src /src
 
 WORKDIR /src
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+CMD ["ddtrace-run", "gunicorn", "test_app.wsgi:application"]
