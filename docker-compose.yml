@@ -1,0 +1,53 @@
+
+version: "3.7"
+
+services:
+  django:
+    build: ./
+    volumes:
+        - ./src:/src:rw
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  datadog:
+    image: gcr.io/datadoghq/agent:7
+    ports:
+      - 8125
+      - 8126
+    environment:
+      - DD_API_KEY=11695686d4d1e0c3a4d5b57de1794762
+      - DD_SITE=us5.datadoghq.com
+      - DD_APM_ENABLED=true
+      - DD_AGENT_MAJOR_VERSION=7
+      - DD_LOGS_ENABLED=true
+      - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+    links:
+      - django
+      - postgres
+      - redis
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+
+
+volumes:
+  postgres_data: {}
