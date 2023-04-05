@@ -10,6 +10,12 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
+    environment:
+      DD_AGENT_HOST: datadog
+    labels:
+      com.datadoghq.ad.check_names: '["gunicorn"]'
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: '[{"proc_name": "test_app.wsgi:application"}]'
 
   postgres:
     image: postgres:13-alpine
@@ -29,9 +35,9 @@ services:
 
   datadog:
     image: gcr.io/datadoghq/agent:7
-    ports:
-      - 8125
-      - 8126
+#    ports:
+#      - 8125
+#      - 8126
     environment:
       - DD_API_KEY=11695686d4d1e0c3a4d5b57de1794762
       - DD_SITE=us5.datadoghq.com

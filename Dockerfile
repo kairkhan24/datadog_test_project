@@ -21,4 +21,8 @@ COPY ./src /src
 
 WORKDIR /src
 
-CMD ["ddtrace-run", "gunicorn", "test_app.wsgi:application"]
+CMD ["ddtrace-run", "gunicorn", "--config", "gunicorn.conf.py", "test_app.wsgi:application"]
+
+
+
+#CMD ["ddtrace-run", "python", "manage.py", "runserver", "0.0.0.0:8000"]

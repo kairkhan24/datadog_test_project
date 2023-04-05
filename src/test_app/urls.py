@@ -8,6 +8,6 @@ def test_view(request):
 
 
 urlpatterns = [
-    path('adminnnss/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('test/', test_view)
 ]
